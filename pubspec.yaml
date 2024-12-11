@@ -28,6 +28,9 @@ dependencies:
   avatar_glow: ^3.0.1
   permission_handler: ^11.3.1
   path_provider: ^2.1.5
+  table_calendar: ^3.0.8
+  cloud_firestore: ^5.5.1
+
   
  
 

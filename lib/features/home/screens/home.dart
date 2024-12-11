@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:innovators/features/ai_scheduling/ai_scheduling_screens.dart';
 import 'package:innovators/features/chatbot.dart';
 import 'package:innovators/features/fertlizer_health/screens/fertlizer_health.dart';
 import 'package:innovators/features/home/screens/soil_analaysis.dart';
@@ -231,7 +232,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const WaterScheduling(),
+        builder: (context) => AiScheduling(),
       ),
     );
   }
