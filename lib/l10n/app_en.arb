@@ -1,0 +1,161 @@
+{
+   "selectCrops": "Select Your Crops",
+    "@selectCrops":{
+        "description": "Title"
+    },
+    "updateCrops":"🌱⭐ You can update this list anytime as you grow more crops",
+    "@updateCrops":{
+        "description": "subTitle"
+    },
+    "nextStep": "Next Step",
+    "@nextStep":{
+        "description": "nextButton"
+    },
+    "appName":"Smart Fasal🌱",
+    "@appName": {
+        "description":"App Name"
+    },
+    "analysis": "Analysis",
+    "@analysis": {
+        "description": "Soil Analysis, bottom navigation"
+    },
+    "chatBot": "ChatBot",
+    "@chatBot": {
+        "description": "ChatBot bottom navigation"
+    },
+      "scheme": "Marketplace",
+    "@scheme": {
+        "description": "Scheme bottom navigation"
+    },
+        "ai": "AI Scheduling",
+    "@ai": {
+        "description": "Profile bottom navigation"
+    },
+    "soilMoisture":"Soil Moisture %",
+    "@soilMoisture": {
+        "description":"Soil Moisture %"
+    },
+    "temperature": "Temperature",
+    "@temperature": {
+        "description": "Temperature"
+    },
+    "fertilizerLevel": "Ferilizer Level",
+    "@fertilizerLevel": {
+        "description": "waterLevel"
+    },
+    "phLevel": "pH Level",
+    "@phLevel": {
+        "description": "phLevel"
+    },
+    "favorable":"✅ Favorable for crops",
+    "@favorable": {
+        "description": "Favorable"
+    },
+    "notfavorable":"⚠️ Not favorable for crops",
+    "@notfavorable":{
+        "description":"notfavorable"
+    },
+    "continuebutton": "Continue",
+    "@continuebutton": {
+        "description": "continue"
+    },
+    "welcomeToSmartFasal": "Welcome to Smart Fasal🌱",
+    "@welcomeToSmartFasal":{
+        "description":"welcomeToSmartFasal"
+    },
+    "selectLanguage": "Select Language",
+    "@selectLanguage": {
+        "description": "selectLanguage"
+    },
+    "fertilizer_status": "Fertilizer Healthy ✅",
+    "@fertilizer_status":{
+        "description": "fertilizer_status"
+    },
+    "chatBot_screen": "Welcome, Let's start chatting with Agribot!",
+    "@chatBot_screen":{
+        "description":"chatBot_screen"
+    },
+    "fertilizer_healthsection": "Ferilizer Health Schedule",
+    "@fertilizer_healthsection": {
+        "description": "Fertilizer_health"
+    },
+    "fertilizer_health": "Fertlizer Health",
+    "@fertilizer_health":{
+        "description": "fertilizer_health"
+    },
+    "manual":"Manual",
+    "@manual": {
+        "description":"manual"
+    },
+    "progress": "Progress",
+    "@progress":{
+        "description": "progress"
+    },
+    "fertilizer_health_healthy":"Fertlizer health (healthy)",
+    "@fertilizer_health_healthy": {
+        "description": "fertilizer_health_healthy"
+    },
+    "organic_matter": "Organic Matter Low! ⚠️",
+    "@organic_matter":{
+        "description": "organic_matter"
+    },
+    "next_schedule": "Next scheduled checkup in 2 weeks.",
+    "@next_schedule": {
+        "description": "next_schedule"
+    },
+    "usage": "Usage",
+    "@usage":{
+        "description": "usage"
+    },
+    "yield_inc": "Yield Increase",
+    "@yield_inc":{
+        "description":"yield_inc"
+    },
+    "fertilizer_efficiency": "Fertilizer Efficiency",
+    "@fertilizer_efficiency": {
+        "description": "fertilizer_efficiency"
+    },
+    "yield": "5x yield",
+    "@yield":{
+        "description": "yield"
+    },
+    "chatwithagribot": "Chat with AgriBot",
+    "@chatwithagribot": {
+        "description": "chatwithagribot"
+    },
+    "profile": "Profile",
+    "@profile":{
+        "description":"profile"
+    },
+    "moreoptions": "More Options",
+    "@moreoptions":{
+        "description":"moreoptions"
+    },
+    "phoneLogin": "Please Enter your Phone number to be a part of smart fasal",
+    "@phoneLogin": {
+        "description": "phoneLogin"
+    },
+    "enterPhoneNumber": "Enter your phone number",
+    "@enterPhoneNumber":{
+        "description": "enterPhoneNumber"
+    },
+    "sendOtp": "Send OTP",
+    "@sendOtp": {
+        "description": "send OTP"
+    },
+    "enterOtp": "Enter your OTP",
+    "@enterOtp": {
+        "description": "enterOtp"
+    },
+    "verifyOtp": "Let's Smartify your Fasal🌱",
+    "@verifyOtp": {
+        "description": "verifyOtp"
+    }
+
+}
+
+    
+
+
+
+    

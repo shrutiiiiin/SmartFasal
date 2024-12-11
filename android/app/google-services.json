@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "225817137431",
+    "firebase_url": "https://sih24hackathon-default-rtdb.firebaseio.com",
+    "project_id": "sih24hackathon",
+    "storage_bucket": "sih24hackathon.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225817137431:android:d46a821ab9ef2928cf2752",
+        "android_client_info": {
+          "package_name": "com.sih24.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkFTN6GMAAKtjAZ9ApKPeVAXyfLat-Fyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

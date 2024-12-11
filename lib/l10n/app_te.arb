@@ -1,0 +1,71 @@
+{
+    "@@locale": "te",
+    "selectCrops": "మీ పంటలను ఎంచుకోండి",
+    "@selectCrops": {
+        "description": "Title"
+    },
+    "updateCrops": "🌱⭐ మీరు మరిన్ని పంటలను పెంచే కొద్దీ ఈ జాబితాను నవీకరించవచ్చు",
+    "@updateCrops": {
+        "description": "subTitle"
+    },
+    "nextStep": "తదుపరి దశ",
+    "@nextStep": {
+        "description": "nextButton"
+    },
+    "appName": "స్మార్ట్ ఫసల్ 🌱",
+    "@appName": {
+        "description": "App Name"
+    },
+    "analysis": "విశ్లేషణ",
+    "@analysis": {
+        "description": "Soil Analysis, bottom navigation"
+    },
+    "chatBot": "చాట్ బాట్",
+    "@chatBot": {
+        "description": "ChatBot bottom navigation"
+    },
+    "scheme": "మార్కెట్ప్లేస్",
+    "@scheme": {
+        "description": "Scheme bottom navigation"
+    },
+    "ai": "AI షెడ్యూలింగ్",
+    "@ai": {
+        "description": "Profile bottom navigation"
+    },
+    "soilMoisture": "మంటి తేమ %",
+    "@soilMoisture": {
+        "description": "Soil Moisture %"
+    },
+    "temperature": "సాంప్రదాయం",
+    "@temperature": {
+        "description": "Temperature"
+    },
+    "fertilizerLevel": "ఎరువు స్థాయి",
+    "@fertilizerLevel": {
+        "description": "waterLevel"
+    },
+    "phLevel": "pH స్థాయి",
+    "@phLevel": {
+        "description": "phLevel"
+    },
+    "favorable": "✅ పంటలకు అనుకూలం",
+    "@favorable": {
+        "description": "Favorable"
+    },
+    "notfavorable": "⚠️ పంటలకు అనుకూల కాదు",
+    "@notfavorable": {
+        "description": "notfavorable"
+    },
+    "continuebutton": "కొనసాగించు",
+    "@continuebutton": {
+        "description": "continue"
+    },
+    "welcomeToSmartFasal": "స్మార్ట్ ఫసల్ 🌱 へ వ స్వాగతం",
+    "@welcomeToSmartFasal": {
+        "description": "welcomeToSmartFasal"
+    },
+    "selectLanguage": "భాషను ఎంచుకోండి",
+    "@selectLanguage": {
+        "description": "selectLanguage"
+    }
+}
