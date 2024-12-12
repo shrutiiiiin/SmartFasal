@@ -1,8 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:innovators/features/home/screens/home.dart';
 import 'package:innovators/firebase_options.dart';
 import 'package:innovators/welcome.dart';
 
@@ -76,15 +77,10 @@ class AuthChecker extends StatelessWidget {
           );
         }
 
-        // User is authenticated
-        // if (snapshot.hasData) {
-        //   // Redirect to HomeScreen if user is signed in
-        //   return HomeScreen(
-        //     setLocale: (Locale locale) {
-        //       onLocaleChanged(locale);
-        //     },
-        //   );
-        // }
+        if (snapshot.hasData) {
+          // Redirect to HomeScreen if user is signed in
+          return const Home();
+        }
 
         // User is not authenticated, show PhoneLoginScreen
         return WelcomeScreen(
