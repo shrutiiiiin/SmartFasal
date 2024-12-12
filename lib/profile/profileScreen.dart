@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:innovators/welcome.dart';
 
 class ProfileScreen extends StatelessWidget {
   final Function(Locale) setLocale;
@@ -20,10 +21,26 @@ class ProfileScreen extends StatelessWidget {
         'locale': const Locale('en'),
         'nativeName': 'English'
       },
-      {'name': 'Hindi', 'locale': const Locale('hi'), 'nativeName': 'हिन्दी'},
-      {'name': 'Marathi', 'locale': const Locale('mr'), 'nativeName': 'मराठी'},
-      {'name': 'Tamil', 'locale': const Locale('ta'), 'nativeName': 'தமிழ்'},
-      {'name': 'Telugu', 'locale': const Locale('te'), 'nativeName': 'తెలుగు'},
+      {
+        'name': 'Hindi',
+        'locale': const Locale('hi'),
+        'nativeName': 'हिन्दी',
+      },
+      {
+        'name': 'Marathi',
+        'locale': const Locale('mr'),
+        'nativeName': 'मराठी',
+      },
+      {
+        'name': 'Tamil',
+        'locale': const Locale('ta'),
+        'nativeName': 'தமிழ்',
+      },
+      {
+        'name': 'Telugu',
+        'locale': const Locale('te'),
+        'nativeName': 'తెలుగు',
+      },
     ];
 
     showModalBottomSheet(
@@ -73,6 +90,32 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  // New method to handle logout
+  void _logout(BuildContext context) async {
+    try {
+      // Sign out from Firebase Authentication
+      await FirebaseAuth.instance.signOut();
+
+      // Navigate to the login screen and remove all previous routes
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => WelcomeScreen(setLocale: setLocale),
+        ),
+      );
+    } catch (e) {
+      // Show error if logout fails
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Logout failed: ${e.toString()}',
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final User? user =
@@ -92,7 +135,7 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             // Circle Avatar
-            CircleAvatar(
+            const CircleAvatar(
               radius: 50,
               backgroundColor: Colors.green,
               child: Icon(
@@ -113,7 +156,7 @@ class ProfileScreen extends StatelessWidget {
             Card(
               elevation: 2,
               child: ListTile(
-                leading: Icon(Icons.science, color: Colors.green),
+                leading: const Icon(Icons.science, color: Colors.green),
                 title: Text(
                   npkValues,
                   style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
@@ -137,6 +180,22 @@ class ProfileScreen extends StatelessWidget {
               ),
               child: Text(
                 AppLocalizations.of(context)!.localeName,
+                style: GoogleFonts.poppins(fontSize: 16),
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Logout Button
+            ElevatedButton(
+              onPressed: () {
+                _logout(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
+              child: Text(
+                'logout', // You'll need to add this to your localization file
                 style: GoogleFonts.poppins(fontSize: 16),
               ),
             ),
