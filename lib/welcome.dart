@@ -121,7 +121,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 300), // Added space before button
+                const SizedBox(height: 220), // Added space before button
                 SizedBox(
                   width: double.infinity, // Full width button
                   child: ElevatedButton(
