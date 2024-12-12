@@ -81,7 +81,7 @@ class AuthChecker extends StatelessWidget {
 
         if (snapshot.hasData) {
           // Redirect to HomeScreen if user is signed in
-          return const Home();
+          return Home();
         }
 
         return WelcomeScreen(

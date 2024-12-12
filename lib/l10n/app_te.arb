@@ -67,5 +67,7 @@
     "selectLanguage": "భాషను ఎంచుకోండి",
     "@selectLanguage": {
         "description": "selectLanguage"
-    }
+    },
+   
+
 }
