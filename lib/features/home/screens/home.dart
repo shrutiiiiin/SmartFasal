@@ -40,6 +40,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   final String _fertilizerQuality = 'Good';
 
   void _fetchSoilData() {
+    print(FirebaseAuth.instance.currentUser!.phoneNumber);
     _databaseRef.child('data').onValue.listen((event) {
       final snapshotValue = event.snapshot.value;
       if (snapshotValue != null) {
@@ -66,6 +67,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       );
       return;
     }
+
     final payload = {
       "nitrogen": _nitrogen.round().toString(),
       "phosphorus": _phosphorus.round().toString(),
