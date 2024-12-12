@@ -17,8 +17,8 @@ class BarGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return BarChart(
       BarChartData(
-        maxY: 300, // Adjusted maximum value on the Y axis
-        minY: 100, // Adjusted minimum value on the Y axis
+        maxY: 300,
+        minY: 100,
         barGroups: _createBarGroups(),
         titlesData: FlTitlesData(
           leftTitles: const AxisTitles(

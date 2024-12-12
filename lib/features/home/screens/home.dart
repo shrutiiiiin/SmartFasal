@@ -76,7 +76,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       "fertilizer_quality": _fertilizerQuality,
       "ph": _ph.round().toString(),
       "to_number": "whatsapp:${currentUser.phoneNumber}",
-      "state": "haryana"
+      "state": "haryana",
+      "language": Localizations.localeOf(context).languageCode,
     };
 
     // Detailed logging
