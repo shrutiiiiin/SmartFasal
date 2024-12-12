@@ -84,7 +84,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     print('Payload JSON: ${jsonEncode(payload)}');
     print('Payload Length: ${jsonEncode(payload).length}');
 
-    // Show loading indicator
     showDialog(
       context: context,
       barrierDismissible: false,
