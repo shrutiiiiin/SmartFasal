@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:innovators/features/chatbot.dart';
 import 'package:innovators/features/fertlizer_health/screens/fertlizer_health.dart';
@@ -29,6 +32,104 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   late Animation<double> _animation;
   bool _isChatBotVisible = false;
 
+  // NPK and Soil Analysis Variables
+  double _nitrogen = 0;
+  double _phosphorus = 0;
+  double _potassium = 0;
+  double _ph = 0;
+  final String _fertilizerQuality = 'Good';
+
+  void _fetchSoilData() {
+    _databaseRef.child('data').onValue.listen((event) {
+      final snapshotValue = event.snapshot.value;
+      if (snapshotValue != null) {
+        final data = snapshotValue as Map<dynamic, dynamic>;
+        print(data);
+        setState(() {
+          _nitrogen = double.tryParse(data['nitrogen']?.toString() ?? '') ?? 0;
+          _phosphorus =
+              double.tryParse(data['phosphorus']?.toString() ?? '') ?? 0;
+          _potassium =
+              double.tryParse(data['potassium']?.toString() ?? '') ?? 0;
+          _ph = double.tryParse(data['pH']?.toString() ?? '') ?? 0;
+        });
+      }
+    });
+  }
+
+  Future<void> _sendWhatsAppMessage() async {
+    final User? currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser == null || currentUser.phoneNumber == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User not signed in')),
+      );
+      return;
+    }
+    final payload = {
+      "nitrogen": _nitrogen.round().toString(),
+      "phosphorus": _phosphorus.round().toString(),
+      "potassium": _potassium.round().toString(),
+      "fertilizer_quality": _fertilizerQuality,
+      "ph": _ph.round().toString(),
+      "to_number": "whatsapp:${currentUser.phoneNumber}",
+      "state": "haryana"
+    };
+
+    // Detailed logging
+    print('Payload JSON: ${jsonEncode(payload)}');
+    print('Payload Length: ${jsonEncode(payload).length}');
+
+    // Show loading indicator
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Color(0xff323F23)),
+          ),
+        );
+      },
+    );
+
+    try {
+      final response = await http.post(
+        Uri.parse('https://npk-sms.onrender.com/send-npk-whatsapp'),
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any additional headers from Postman
+        },
+        body: jsonEncode(payload),
+      );
+
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      // Remove loading indicator
+      Navigator.of(context).pop();
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('A message has been sent successfully')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Error sending message'),
+        ));
+      }
+    } catch (e) {
+      // Remove loading indicator
+      Navigator.of(context).pop();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error sending message'),
+        ),
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +142,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       parent: _animationController,
       curve: Curves.easeInOut,
     );
+    _fetchSoilData();
   }
 
   @override
@@ -188,16 +290,27 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(top: 16, right: 4),
-              child: Text(
-                // '$_pumpEmoji Pump $_pumpStatus',
-                AppLocalizations.of(context)!.fertilizer_status,
-                style: GoogleFonts.poppins(
-                  color: const Color(0xff323F23),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w800,
-                ),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Image.asset(
+                      'assets/home/images/whatsapp.png',
+                      width: 24,
+                      height: 24,
+                    ),
+                    onPressed: _sendWhatsAppMessage,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.fertilizer_status,
+                    style: GoogleFonts.poppins(
+                      color: const Color(0xff323F23),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ],
               ),
-            )
+            ),
           ],
         ),
         toolbarHeight: 100,
