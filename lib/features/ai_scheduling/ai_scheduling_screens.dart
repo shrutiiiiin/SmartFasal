@@ -4,7 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class AiScheduling extends StatefulWidget {
-  const AiScheduling({super.key});
+  final double? nitrogen;
+  final double? phosphorus;
+  final double? potassium;
+
+  const AiScheduling({
+    Key? key,
+    this.nitrogen,
+    this.phosphorus,
+    this.potassium,
+  }) : super(key: key);
 
   @override
   _AiSchedulingState createState() => _AiSchedulingState();
@@ -15,45 +24,24 @@ class _AiSchedulingState extends State<AiScheduling> {
   DateTime? _selectedDay;
   String npkValues = '';
 
-  // Firebase instance
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
     super.initState();
-    _selectedDay = _focusedDay; // Initialize with the current date
+    _selectedDay = _focusedDay;
+    _updateNPKValues();
   }
 
-  // Fetch NPK values for the selected day from Firebase
-  Future<void> _fetchNPKValues() async {
-    User? user = _auth.currentUser;
-    if (user == null) return;
-
-    try {
-      DocumentSnapshot snapshot = await _firestore
-          .collection('fertilizer_checkups')
-          .doc(user.uid)
-          .collection('checkups')
-          .doc(_selectedDay.toString())
-          .get();
-
-      if (snapshot.exists) {
-        setState(() {
-          npkValues = snapshot['npk_values'] ?? 'No NPK values available';
-        });
-      } else {
-        setState(() {
-          npkValues = 'No NPK values for this day';
-        });
-      }
-    } catch (e) {
-      print("Error fetching NPK values: $e");
-    }
+  void _updateNPKValues() {
+    setState(() {
+      npkValues =
+          'Nitrogen: ${widget.nitrogen}, Phosphorus: ${widget.phosphorus}, Potassium: ${widget.potassium}';
+    });
   }
 
-  // Save NPK values to Firebase for the selected day
-  Future<void> _saveNPKValues(String npkValue) async {
+  Future<void> _saveNPKValues() async {
     User? user = _auth.currentUser;
     if (user == null) return;
 
@@ -64,7 +52,9 @@ class _AiSchedulingState extends State<AiScheduling> {
           .collection('checkups')
           .doc(_selectedDay.toString())
           .set({
-        'npk_values': npkValue,
+        'nitrogen': widget.nitrogen,
+        'phosphorus': widget.phosphorus,
+        'potassium': widget.potassium,
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('NPK values saved successfully!')),
@@ -77,9 +67,7 @@ class _AiSchedulingState extends State<AiScheduling> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('AI Scheduling'),
-      ),
+      appBar: AppBar(title: const Text('AI Scheduling')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -90,7 +78,6 @@ class _AiSchedulingState extends State<AiScheduling> {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            // Calendar widget
             TableCalendar(
               firstDay: DateTime.utc(2000, 1, 1),
               lastDay: DateTime.utc(2100, 12, 31),
@@ -101,9 +88,6 @@ class _AiSchedulingState extends State<AiScheduling> {
                   _selectedDay = selectedDay;
                   _focusedDay = focusedDay;
                 });
-
-                // Fetch and display NPK values for the selected day
-                _fetchNPKValues();
               },
               calendarStyle: const CalendarStyle(
                 todayDecoration: BoxDecoration(
@@ -125,61 +109,18 @@ class _AiSchedulingState extends State<AiScheduling> {
               'Selected Day: ${_selectedDay?.toLocal().toString().split(' ')[0] ?? 'No day selected'}',
             ),
             const SizedBox(height: 20),
-            // Display NPK values for the selected day
             Text(
               'NPK Values: $npkValues',
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 20),
-            // Button to set NPK values for the selected day
             ElevatedButton(
-              onPressed: () {
-                if (_selectedDay != null) {
-                  _showNPKDialog(context);
-                }
-              },
-              child: const Text('Set NPK Values for Selected Day'),
+              onPressed: _saveNPKValues,
+              child: const Text('Save NPK Values for Selected Day'),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  // Dialog to input NPK values for the selected day
-  void _showNPKDialog(BuildContext context) {
-    String npkValue = '';
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Enter NPK Values'),
-          content: TextField(
-            onChanged: (value) {
-              npkValue = value;
-            },
-            decoration: const InputDecoration(hintText: 'Enter NPK values'),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Save'),
-              onPressed: () {
-                if (npkValue.isNotEmpty) {
-                  _saveNPKValues(npkValue);
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

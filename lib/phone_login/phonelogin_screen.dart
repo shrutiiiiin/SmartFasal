@@ -45,20 +45,29 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
   }
 
   Future<void> _verifyPhoneNumber(String phoneNumber) async {
-    // Set the Firebase Authentication language code
     _auth.setLanguageCode(Localizations.localeOf(context).languageCode);
 
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) async {
         // Auto sign in on Android
-        await _auth.signInWithCredential(credential);
+        UserCredential userCredential =
+            await _auth.signInWithCredential(credential);
+
+        // Navigate to Home with userId
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Home(),
+          ),
+          (route) => false,
+        );
       },
       verificationFailed: (FirebaseAuthException e) {
         _showErrorDialog('Verification Failed: ${e.message}');
       },
       codeSent: (String verificationId, int? resendToken) {
-        // Navigate to OTP verification screen
+        // Navigate to OTP verification screen with verificationId and phoneNumber
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -69,9 +78,7 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
           ),
         );
       },
-      codeAutoRetrievalTimeout: (String verificationId) {
-        // Handle auto-retrieval timeout if needed
-      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
 
@@ -201,7 +208,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       // Navigate to Home after successful login
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => const Home()),
+        MaterialPageRoute(builder: (context) => Home()),
         (route) => false,
       );
     } on FirebaseAuthException catch (e) {

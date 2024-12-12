@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert'; // For JSON encoding
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -8,9 +7,10 @@ import 'package:http/http.dart' as http;
 import 'package:innovators/features/home/widgets/bar_graph/bar_graph.dart';
 import 'package:innovators/features/home/widgets/home_widget/soil_parameters.dart';
 import 'package:innovators/features/home/widgets/home_widget/weather_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 
 class SoilAnalaysis extends StatefulWidget {
-  const SoilAnalaysis({super.key});
+  const SoilAnalaysis({Key? key}) : super(key: key);
 
   @override
   State<SoilAnalaysis> createState() => _SoilAnalaysisState();
@@ -18,6 +18,9 @@ class SoilAnalaysis extends StatefulWidget {
 
 class _SoilAnalaysisState extends State<SoilAnalaysis> {
   final DatabaseReference _databaseRef = FirebaseDatabase.instance.ref();
+  final FirebaseFirestore _firestore =
+      FirebaseFirestore.instance; // Firestore instance
+
   Map<dynamic, dynamic>? _data;
   late StreamSubscription<DatabaseEvent> _dataSubscription;
   String? recommendedCrop;
@@ -44,6 +47,7 @@ class _SoilAnalaysisState extends State<SoilAnalaysis> {
           _updateGridData();
           _updateNPKValues();
           _sendPostRequest();
+          _storeDataInFirestore();
         });
       }
     }, onError: (error) {
@@ -70,7 +74,7 @@ class _SoilAnalaysisState extends State<SoilAnalaysis> {
         ph = double.tryParse(_data!['potassium']?.toString() ?? '') ?? 6.50;
 
         // Use the class-level `fertlizerQuality` variable
-        fertlizerQuality = 'Good'; // Update as per your logic
+        fertlizerQuality = 'Good';
       });
 
       // Pass the correct `fertlizerQuality` variable to the sendSMS method
@@ -82,6 +86,35 @@ class _SoilAnalaysisState extends State<SoilAnalaysis> {
       //   fertlizerQuality,
       //   ph, // Pass the correct variable
       // );
+    }
+  }
+
+  Future<void> _storeDataInFirestore() async {
+    if (_data != null) {
+      try {
+        // Create a document in the user's collection with a timestamp as the document ID
+        await _firestore
+            .collection('users')
+            .doc('realtime data value')
+            .collection('soil_data')
+            .doc(DateTime.now().toIso8601String())
+            .set({
+          'nitrogen': nitrogen,
+          'phosphorus': phosphorus,
+          'potassium': potassium,
+          'ph': ph,
+          'fertilizerQuality': fertlizerQuality,
+          'recommendedCrop': recommendedCrop,
+          'temperature': _data!['temperatureC'],
+          'humidity': _data!['humidity'],
+          'waterLevel': _data!['waterLevel'],
+          'timestamp': FieldValue.serverTimestamp(), // Use server timestamp
+        });
+
+        print('Data successfully stored in Firestore');
+      } catch (e) {
+        print('Error storing data in Firestore: $e');
+      }
     }
   }
 

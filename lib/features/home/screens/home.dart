@@ -16,7 +16,7 @@ import 'package:innovators/features/marketplace/screens/crop_realtime.dart';
 import 'package:innovators/profile/profileScreen.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -232,7 +232,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AiScheduling(),
+        builder: (context) => const AiScheduling(),
       ),
     );
   }
@@ -260,7 +260,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     List<Widget> childrens = [
-      const SoilAnalaysis(),
+      SoilAnalaysis(),
       Container(),
       FertilizerProductsScreen(
         currentLanguage: Localizations.localeOf(context).languageCode,

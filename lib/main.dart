@@ -84,7 +84,6 @@ class AuthChecker extends StatelessWidget {
           return const Home();
         }
 
-        // User is not authenticated, show PhoneLoginScreen
         return WelcomeScreen(
           setLocale: (Locale locale) {
             onLocaleChanged(locale);
