@@ -86,6 +86,10 @@
     "sendOtp":"OTPని పంపండి",
      "@sendOtp": {
         "description": "sendOtp"
+    },
+    "handleFertilizerCalc":"ఎరువులు గణన",
+    "@handleFertilizerCalc":{
+        "description":"handleFertilizerCalc"
     }
 
 

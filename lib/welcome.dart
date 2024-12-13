@@ -20,6 +20,7 @@ class WelcomeScreen extends StatelessWidget {
       {'name': 'Marathi', 'locale': const Locale('mr'), 'nativeName': 'मराठी'},
       {'name': 'Tamil', 'locale': const Locale('ta'), 'nativeName': 'தமிழ்'},
       {'name': 'Telugu', 'locale': const Locale('te'), 'nativeName': 'తెలుగు'},
+      {'name': 'Punjabi', 'locale': const Locale('pa'), 'nativename': 'ਪੰਜਾਬੀ'},
     ];
 
     showModalBottomSheet(

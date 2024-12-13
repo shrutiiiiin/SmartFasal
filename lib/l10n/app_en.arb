@@ -27,7 +27,7 @@
     "@scheme": {
         "description": "Scheme bottom navigation"
     },
-        "ai": "AI Scheduling",
+        "ai": "Fertilizer health Scheduling",
     "@ai": {
         "description": "Profile bottom navigation"
     },
@@ -150,6 +150,10 @@
     "verifyOtp": "Let's Smartify your Fasal🌱",
     "@verifyOtp": {
         "description": "verifyOtp"
+    },
+    "handleFertilizerCalc": "Ferilizer Calculation",
+    "@handleFertilizerCalc": {
+        "description": "handleFertilizerCalc"
     }
 
 }

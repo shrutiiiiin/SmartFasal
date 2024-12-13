@@ -36,5 +36,6 @@
     "enterPhoneNumber":"तुमचा फोन नंबर टाका",
     "sendOtp":"ओटीपी पाठवा",
     "enterOtp":"तुमचा ओटीपी टाका",
-    "verifyOtp":"चला तुमचा फसल स्मार्ट करूया"
+    "verifyOtp":"चला तुमचा फसल स्मार्ट करूया",
+    "handleFertilizerCalc":"खत गणना"
 }
