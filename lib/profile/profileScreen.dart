@@ -189,7 +189,7 @@ class ProfileScreen extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
               child: Text(
-                'logout', // You'll need to add this to your localization file
+                'logout',
                 style: GoogleFonts.poppins(fontSize: 16, color: Colors.white),
               ),
             ),

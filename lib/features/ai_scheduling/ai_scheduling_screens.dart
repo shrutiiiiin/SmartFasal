@@ -204,8 +204,6 @@ class _AiSchedulingState extends State<AiScheduling> {
                       Text('Phosphorus: ${data['phosphorus'] ?? 'N/A'}'),
                       Text('Potassium: ${data['potassium'] ?? 'N/A'}'),
                       Text('pH: ${data['ph'] ?? 'N/A'}'),
-                      Text(
-                          'Recommended Crop: ${data['recommendedCrop'] ?? 'N/A'}'),
                     ],
                   );
                 },
