@@ -10,7 +10,7 @@ import 'package:innovators/features/home/widgets/home_widget/weather_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 
 class SoilAnalaysis extends StatefulWidget {
-  const SoilAnalaysis({Key? key}) : super(key: key);
+  const SoilAnalaysis({super.key});
 
   @override
   State<SoilAnalaysis> createState() => _SoilAnalaysisState();
@@ -104,7 +104,6 @@ class _SoilAnalaysisState extends State<SoilAnalaysis> {
           'potassium': potassium,
           'ph': ph,
           'fertilizerQuality': fertlizerQuality,
-          'recommendedCrop': recommendedCrop,
           'temperature': _data!['temperatureC'],
           'humidity': _data!['humidity'],
           'waterLevel': _data!['waterLevel'],
@@ -197,7 +196,7 @@ class _SoilAnalaysisState extends State<SoilAnalaysis> {
             recommendedCrop =
                 data['recommended_crop']; // Save the recommended crop
           });
-          print('Recommended Crop: ${data['recommended_crop']}');
+          // print('Recommended Crop: ${data['recommended_crop']}');
         } else {
           print('Failed to get crop recommendation');
         }

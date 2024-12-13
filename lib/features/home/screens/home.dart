@@ -8,15 +8,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:innovators/features/ai_scheduling/ai_scheduling_screens.dart';
+import 'package:innovators/features/fertlizer_health/screens/fertilizer_calculate.dart';
+import 'package:innovators/features/fertlizer_health/screens/fertilizer_health_scheduling_screens.dart';
 import 'package:innovators/features/chatbot.dart';
-import 'package:innovators/features/fertlizer_health/screens/fertlizer_health.dart';
 import 'package:innovators/features/home/screens/soil_analaysis.dart';
 import 'package:innovators/features/marketplace/screens/crop_realtime.dart';
 import 'package:innovators/profile/profileScreen.dart';
 
 class Home extends StatefulWidget {
-  Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -221,6 +221,19 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   _handleAIScheduling();
                 },
               ),
+              ListTile(
+                leading: Image.asset(
+                  'assets/home/icons/Chatbot.png',
+                  width: 24,
+                ),
+                title: Text(
+                  AppLocalizations.of(context)!.handleFertilizerCalc,
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  _handlefertilizercalculation();
+                },
+              ),
             ],
           ),
         );
@@ -233,6 +246,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       context,
       MaterialPageRoute(
         builder: (context) => const AiScheduling(),
+      ),
+    );
+  }
+
+  void _handlefertilizercalculation() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FertilizerCalculatorPage(),
       ),
     );
   }
@@ -260,17 +282,17 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     List<Widget> childrens = [
-      SoilAnalaysis(),
+      const SoilAnalaysis(),
       Container(),
       FertilizerProductsScreen(
         currentLanguage: Localizations.localeOf(context).languageCode,
       ),
       ProfileScreen(
         setLocale: (Locale locale) {
-          // Implement your locale change logic here
           print('Locale changed to: $locale');
         },
-        npkValues: 'N: 12, P: 6, K: 8', // Replace with actual NPK values
+        npkValues:
+            'N: $_nitrogen , P: $_phosphorus, K: $_potassium', // Replace with actual NPK values
       ),
     ];
     var screenWidth = MediaQuery.of(context).size.width;

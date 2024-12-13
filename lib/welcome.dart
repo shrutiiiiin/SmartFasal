@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:innovators/features/home/screens/home.dart';
 import 'package:innovators/phone_login/phonelogin_screen.dart';
-import 'package:innovators/phone_login/phonelogin_services.dart';
 
 class WelcomeScreen extends StatelessWidget {
   final Function(Locale) setLocale;
@@ -22,6 +20,7 @@ class WelcomeScreen extends StatelessWidget {
       {'name': 'Marathi', 'locale': const Locale('mr'), 'nativeName': 'मराठी'},
       {'name': 'Tamil', 'locale': const Locale('ta'), 'nativeName': 'தமிழ்'},
       {'name': 'Telugu', 'locale': const Locale('te'), 'nativeName': 'తెలుగు'},
+      {'name': 'Punjabi', 'locale': const Locale('pa'), 'nativename': 'ਪੰਜਾਬੀ'},
     ];
 
     showModalBottomSheet(
@@ -121,7 +120,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 300), // Added space before button
+                const SizedBox(height: 220), // Added space before button
                 SizedBox(
                   width: double.infinity, // Full width button
                   child: ElevatedButton(
