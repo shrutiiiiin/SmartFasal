@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:innovators/features/home/screens/home.dart';
 import 'package:innovators/phone_login/phonelogin_screen.dart';
-import 'package:innovators/phone_login/phonelogin_services.dart';
 
 class WelcomeScreen extends StatelessWidget {
   final Function(Locale) setLocale;

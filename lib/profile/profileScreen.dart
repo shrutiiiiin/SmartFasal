@@ -90,10 +90,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // New method to handle logout
   void _logout(BuildContext context) async {
     try {
-      // Sign out from Firebase Authentication
       await FirebaseAuth.instance.signOut();
 
       // Navigate to the login screen and remove all previous routes
@@ -118,8 +116,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final User? user =
-        FirebaseAuth.instance.currentUser; // Get the current logged-in user
+    final User? user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       appBar: AppBar(
@@ -134,7 +131,6 @@ class ProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Circle Avatar
             const CircleAvatar(
               radius: 50,
               backgroundColor: Colors.green,
@@ -152,7 +148,6 @@ class ProfileScreen extends StatelessWidget {
                   fontSize: 18, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 16),
-            // NPK Values
             Card(
               elevation: 2,
               child: ListTile(
@@ -168,7 +163,6 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // Change Language Button
             ElevatedButton(
               onPressed: () {
                 _showLanguageBottomSheet(context);
@@ -180,7 +174,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               child: Text(
                 AppLocalizations.of(context)!.localeName,
-                style: GoogleFonts.poppins(fontSize: 16),
+                style: GoogleFonts.poppins(fontSize: 16, color: Colors.white),
               ),
             ),
             const SizedBox(height: 16),
@@ -196,7 +190,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               child: Text(
                 'logout', // You'll need to add this to your localization file
-                style: GoogleFonts.poppins(fontSize: 16),
+                style: GoogleFonts.poppins(fontSize: 16, color: Colors.white),
               ),
             ),
           ],

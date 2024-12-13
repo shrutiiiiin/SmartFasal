@@ -3,8 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:innovators/features/ai_scheduling/ai_scheduling_screens.dart';
 import 'package:innovators/features/home/screens/home.dart';
 import 'package:innovators/firebase_options.dart';
 import 'package:innovators/welcome.dart';
@@ -81,7 +79,7 @@ class AuthChecker extends StatelessWidget {
 
         if (snapshot.hasData) {
           // Redirect to HomeScreen if user is signed in
-          return Home();
+          return const Home();
         }
 
         return WelcomeScreen(

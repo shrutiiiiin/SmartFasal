@@ -10,7 +10,7 @@ import 'package:innovators/features/home/widgets/home_widget/weather_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 
 class SoilAnalaysis extends StatefulWidget {
-  const SoilAnalaysis({Key? key}) : super(key: key);
+  const SoilAnalaysis({super.key});
 
   @override
   State<SoilAnalaysis> createState() => _SoilAnalaysisState();

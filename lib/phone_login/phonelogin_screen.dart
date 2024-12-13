@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:innovators/features/home/screens/home.dart';
 
 class PhoneLoginScreen extends StatefulWidget {
-  const PhoneLoginScreen({Key? key}) : super(key: key);
+  const PhoneLoginScreen({super.key});
 
   @override
   _PhoneLoginScreenState createState() => _PhoneLoginScreenState();
@@ -58,7 +58,7 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => Home(),
+            builder: (context) => const Home(),
           ),
           (route) => false,
         );
@@ -177,10 +177,10 @@ class OtpVerificationScreen extends StatefulWidget {
   final String phoneNumber;
 
   const OtpVerificationScreen({
-    Key? key,
+    super.key,
     required this.verificationId,
     required this.phoneNumber,
-  }) : super(key: key);
+  });
 
   @override
   _OtpVerificationScreenState createState() => _OtpVerificationScreenState();
@@ -208,7 +208,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       // Navigate to Home after successful login
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => Home()),
+        MaterialPageRoute(builder: (context) => const Home()),
         (route) => false,
       );
     } on FirebaseAuthException catch (e) {
