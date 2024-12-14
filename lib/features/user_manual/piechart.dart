@@ -6,7 +6,8 @@ class NPKPieChart extends StatelessWidget {
   final double phosphorus;
   final double potassium;
 
-  NPKPieChart({
+  const NPKPieChart({
+    super.key,
     required this.nitrogen,
     required this.phosphorus,
     required this.potassium,

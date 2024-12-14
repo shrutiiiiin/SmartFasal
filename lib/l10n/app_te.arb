@@ -28,7 +28,7 @@
     "@scheme": {
         "description": "Scheme bottom navigation"
     },
-    "ai": "AI షెడ్యూలింగ్",
+   "ai": "NPK வரலாறு",
     "@ai": {
         "description": "Profile bottom navigation"
     },

@@ -6,7 +6,6 @@
     "analysis":"பகுப்பாய்வு",
     "chatBot": "அரட்டை போட்",
     "scheme":"சந்தை",
-    "ai":"AI திட்டமிடல்",
     "soilMoisture":"மண்ணின் ஈரப்பதம்%",
     "temperature":"வெப்பநிலை",
     "fertilizerLevel":"உர நிலை",
@@ -31,7 +30,8 @@
     "enterOtp": "உங்கள் OTP ஐ உள்ளிடவும்",
     "enterPhoneNumber": "உங்கள் தொலைபேசி எண்ணை உள்ளிடவும்",
     "phoneLogin": "ஸ்மார்ட் ஃபசலின் ஒரு பகுதியாக இருக்க உங்கள் தொலைபேசி எண்ணை உள்ளிடவும்",
-    "handleFertilizerCalc":"உரக் கணக்கீடு"
+    "handleFertilizerCalc":"உரக் கணக்கீடு",
+    "ai":"NPK చరిత్ర"
     
 
 }

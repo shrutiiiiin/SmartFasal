@@ -9,8 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:innovators/features/chatbot.dart';
-import 'package:innovators/features/fertlizer_health/fertilizer_calcultion.dart';
-
 import 'package:innovators/features/fertlizer_health/screens/fertilizer_calculate.dart';
 import 'package:innovators/features/fertlizer_health/screens/fertilizer_health_scheduling_screens.dart';
 import 'package:innovators/features/home/npk_temp_data_generator.dart';
@@ -224,9 +222,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 },
               ),
               ListTile(
-                leading: Image.asset(
-                  'assets/home/icons/Profile.png',
-                  width: 24,
+                leading: const Icon(
+                  Icons.history_outlined,
                 ),
                 title: Text(
                   AppLocalizations.of(context)!.ai,
@@ -237,9 +234,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 },
               ),
               ListTile(
-                leading: Image.asset(
-                  'assets/home/icons/Chatbot.png',
-                  width: 24,
+                leading: const Icon(
+                  Icons.calculate_outlined,
                 ),
                 title: Text(
                   AppLocalizations.of(context)!.handleFertilizerCalc,

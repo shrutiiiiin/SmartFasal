@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class fertilizercalc extends StatefulWidget {
-  fertilizercalc({super.key});
+  const fertilizercalc({super.key});
 
   @override
   State<fertilizercalc> createState() => _fertilizercalcState();

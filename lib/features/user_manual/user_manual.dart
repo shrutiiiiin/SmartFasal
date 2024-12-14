@@ -5,7 +5,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class UserManualFarmer extends StatefulWidget {
-  UserManualFarmer({super.key});
+  const UserManualFarmer({super.key});
 
   @override
   State<UserManualFarmer> createState() => _UserManualFarmerState();
@@ -439,6 +439,7 @@ class _UserManualFarmerState extends State<UserManualFarmer> {
                             '$source $nutrient\n${rod.toY.toStringAsFixed(2)} mg/kg',
                             const TextStyle(color: Colors.white),
                           );
+                          return null;
                         },
                       ),
                     ),
@@ -611,7 +612,7 @@ class _UserManualFarmerState extends State<UserManualFarmer> {
       padding: const EdgeInsets.all(16),
       child: LineChart(
         LineChartData(
-          gridData: FlGridData(show: true),
+          gridData: const FlGridData(show: true),
           titlesData: FlTitlesData(
             show: true,
             bottomTitles: AxisTitles(
@@ -673,7 +674,7 @@ class _UserManualFarmerState extends State<UserManualFarmer> {
               ],
               isCurved: true,
               color: Colors.green.shade700,
-              dotData: FlDotData(show: false),
+              dotData: const FlDotData(show: false),
               belowBarData: BarAreaData(show: false),
               barWidth: 3,
             ),
@@ -685,7 +686,7 @@ class _UserManualFarmerState extends State<UserManualFarmer> {
               ],
               isCurved: true,
               color: Colors.green.shade300,
-              dotData: FlDotData(show: false),
+              dotData: const FlDotData(show: false),
               belowBarData: BarAreaData(show: false),
               barWidth: 3,
             ),

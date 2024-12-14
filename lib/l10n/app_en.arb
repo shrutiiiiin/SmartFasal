@@ -23,6 +23,10 @@
     "@chatBot": {
         "description": "ChatBot bottom navigation"
     },
+     "ai": "NPK History",
+    "@ai": {
+        "description": "Profile bottom navigation"
+    },
       "scheme": "Marketplace",
     "@scheme": {
         "description": "Scheme bottom navigation"

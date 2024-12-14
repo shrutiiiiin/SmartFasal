@@ -14,16 +14,19 @@ class NPKDataScreen extends StatefulWidget {
 class _NPKDataScreenState extends State<NPKDataScreen> {
   final NPKDataGenerator _dataGenerator = NPKDataGenerator();
   List<dynamic>? _npkData; // To store weekly data
+  List<dynamic>? _selectedDayData; // To store selected day's data
   bool _isLoading = true;
   String? _errorMessage;
   String _selectedNutrient = 'Nitrogen'; // Default nutrient
-  String _dataMode = 'day';
+  int _selectedDay = DateTime.now().weekday; // Default to current day
+  double _selectedDayMaxValue =
+      0.0; // To store the max value for the selected day
 
   @override
   void initState() {
     super.initState();
-
-    _fetchNPKDataWeek(); // Fetch weekly data on init
+    // Fetch data for the entire week initially
+    _fetchNPKDataWeek();
   }
 
   Future<void> _fetchNPKDataWeek() async {
@@ -53,7 +56,11 @@ class _NPKDataScreenState extends State<NPKDataScreen> {
 
         if (flattenedData.isNotEmpty) {
           setState(() {
+            // Store weekly data for chart display
             _npkData = flattenedData;
+            // Initially filter data for the current day
+            _selectedDayData = _filterDataForDay(_selectedDay);
+            _selectedDayMaxValue = _getMaxNutrientValueForDay(_selectedDay);
             _isLoading = false;
           });
         } else {
@@ -81,53 +88,55 @@ class _NPKDataScreenState extends State<NPKDataScreen> {
     return ((date.day + firstDayOfMonth - 2) ~/ 7) + 1;
   }
 
-  Future<void> _fetchNPKDataDay(String dayName) async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-      _dataMode = 'day';
-    });
-    try {
-      DateTime now = DateTime.now();
-      String year = now.year.toString();
-      String month = NPKDataGenerator.months[now.month - 1];
-      String week = 'Week ${_getCurrentWeekNumber(now)}';
-      String day = dayName;
-      print(day);
+  List<dynamic> _filterDataForDay(int day) {
+    if (_npkData == null) return [];
 
-      dynamic data = await _dataGenerator.getNPKData(
-        year: year,
-        month: month,
-        week: week,
-        day: day,
-      );
-      print(data);
+    return _npkData!.where((dataPoint) {
+      DateTime date = DateTime.parse(dataPoint['timestamp']);
+      return date.weekday == day;
+    }).toList();
+  }
 
-      if (data != null && data is List) {
-        setState(() {
-          _npkData = data;
-          _isLoading = false;
-        });
-      } else {
-        setState(() {
-          _errorMessage = 'No data found for the selected day.';
-          _isLoading = false;
-        });
+  double _getMaxNutrientValueForDay(int day) {
+    double maxNutrientValue = 0.0;
+    for (var dataPoint in _npkData!) {
+      DateTime date = DateTime.parse(dataPoint['timestamp']);
+      if (date.weekday == day) {
+        double nutrientValue;
+        switch (_selectedNutrient) {
+          case 'Nitrogen':
+            nutrientValue = double.parse(dataPoint['nitrogen'] ?? '0');
+            break;
+          case 'Phosphorus':
+            nutrientValue = double.parse(dataPoint['phosphorus'] ?? '0');
+            break;
+          case 'Potassium':
+            nutrientValue = double.parse(dataPoint['potassium'] ?? '0');
+            break;
+          default:
+            nutrientValue = 0.0;
+        }
+        maxNutrientValue = max(maxNutrientValue, nutrientValue);
       }
-    } catch (e) {
-      setState(() {
-        _errorMessage = 'Error fetching data: $e';
-        _isLoading = false;
-      });
     }
+    return maxNutrientValue;
   }
 
   List<BarChartGroupData> _createChartData() {
     if (_npkData == null || _npkData!.isEmpty) return [];
 
-    Map<int, double> maxNutrientValues =
-        {}; // Use integers for day of the week (1=Mon, 7=Sun)
+    // Initialize a map to hold nutrient values for each day of the week
+    Map<int, double> maxNutrientValues = {
+      1: 0.0,
+      2: 0.0,
+      3: 0.0,
+      4: 0.0,
+      5: 0.0,
+      6: 0.0,
+      7: 0.0
+    };
 
+    // Process each data point and store maximum values per weekday
     for (var dataPoint in _npkData!) {
       DateTime date = DateTime.parse(dataPoint['timestamp']);
       int dayOfWeek = date.weekday; // Monday=1, Sunday=7
@@ -135,42 +144,60 @@ class _NPKDataScreenState extends State<NPKDataScreen> {
 
       switch (_selectedNutrient) {
         case 'Nitrogen':
-          nutrientValue = double.parse(dataPoint['nitrogen']);
+          nutrientValue = double.parse(dataPoint['nitrogen'] ?? '0');
           break;
         case 'Phosphorus':
-          nutrientValue = double.parse(dataPoint['phosphorus']);
+          nutrientValue = double.parse(dataPoint['phosphorus'] ?? '0');
           break;
         case 'Potassium':
-          nutrientValue = double.parse(dataPoint['potassium']);
+          nutrientValue = double.parse(dataPoint['potassium'] ?? '0');
           break;
         default:
           nutrientValue = 0.0;
       }
 
-      if (maxNutrientValues.containsKey(dayOfWeek)) {
-        maxNutrientValues[dayOfWeek] =
-            max(maxNutrientValues[dayOfWeek]!, nutrientValue);
-      } else {
-        maxNutrientValues[dayOfWeek] = nutrientValue;
-      }
+      // Update maximum nutrient value for each day
+      maxNutrientValues[dayOfWeek] =
+          max(maxNutrientValues[dayOfWeek]!, nutrientValue);
     }
 
-    // Sort the entries by day of the week (1=Mon, ..., 7=Sun)
-    List<int> orderedDays = [7, 1, 2, 3, 4, 5, 6]; // Sunday first
+    // Ordered days from Sunday to Saturday
+    List<int> orderedDays = [7, 1, 2, 3, 4, 5, 6];
+
     return orderedDays.map((day) {
       double value = maxNutrientValues[day] ?? 0.0;
+
+      Color barColor;
+
+      if (_selectedDay == day) {
+        // Highlight selected day
+        barColor = Colors.red; // Different color for selected day
+      } else {
+        barColor = Colors.greenAccent; // Default color
+      }
+
       return BarChartGroupData(
         x: day,
         barRods: [
           BarChartRodData(
             toY: value,
-            color: Colors.greenAccent,
+            color: barColor,
             width: 20,
             borderRadius: BorderRadius.circular(8),
           ),
         ],
       );
     }).toList();
+  }
+
+  void _onBarTapped(int day) {
+    setState(() {
+      _selectedDay = day; // Store the tapped day using the correct x value
+      _selectedDayData =
+          _filterDataForDay(day); // Filter data for the selected day
+      _selectedDayMaxValue =
+          _getMaxNutrientValueForDay(day); // Get max value for the tapped day
+    });
   }
 
   @override
@@ -180,79 +207,165 @@ class _NPKDataScreenState extends State<NPKDataScreen> {
         title: const Text('NPK Data', style: TextStyle(fontSize: 24)),
         backgroundColor: Colors.green,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: DropdownButton<String>(
-                  value: _selectedNutrient,
-                  items: <String>['Nitrogen', 'Phosphorus', 'Potassium']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Row(
-                        children: [
-                          const Icon(Icons.grain), // Add an icon here
-                          const SizedBox(width: 8),
-                          Text(value),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedNutrient = newValue!;
-                    });
-                  },
-                  isExpanded: true,
-                  underline: Container(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              // Display the message indicating that the chart shows maximum values
+              const Padding(
+                padding: EdgeInsets.only(bottom: 8.0),
+                child: Text(
+                  'Chart displays the maximum nutrient values for each day of the week.',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.grey,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 30,
-            ), // Space between dropdown and chart
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _errorMessage != null
-                      ? Center(child: Text(_errorMessage!))
-                      : SizedBox(
-                          height: 250,
-                          child: BarChart(BarChartData(
-                            barGroups: _createChartData(),
-                            titlesData: FlTitlesData(
-                              leftTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: true,
-                                  getTitlesWidget: (value, meta) {
-                                    return Text(
-                                      value.toStringAsFixed(
-                                          0), // Format as integers
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
+              Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: DropdownButton<String>(
+                    value: _selectedNutrient,
+                    items: <String>['Nitrogen', 'Phosphorus', 'Potassium']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Row(
+                          children: [
+                            const Icon(Icons.grain),
+                            const SizedBox(width: 8),
+                            Text(value),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedNutrient = newValue!;
+                        // Re-filter data for the currently selected day when nutrient changes
+                        _selectedDayData = _filterDataForDay(_selectedDay);
+                        _selectedDayMaxValue = _getMaxNutrientValueForDay(
+                            _selectedDay); // Update max value
+                      });
+                    },
+                    isExpanded: true,
+                    underline: Container(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30), // Space between dropdown and chart
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: _isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : (_errorMessage != null
+                        ? Center(child: Text(_errorMessage!))
+                        : Column(
+                            children: [
+                              SizedBox(
+                                height: 250,
+                                child: BarChart(
+                                  BarChartData(
+                                    barGroups: _createChartData(),
+                                    titlesData: FlTitlesData(
+                                      leftTitles: AxisTitles(
+                                        sideTitles: SideTitles(
+                                          showTitles: true,
+                                          getTitlesWidget: (value, meta) {
+                                            return Text(
+                                              value.toStringAsFixed(0),
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            );
+                                          },
+                                          reservedSize: 40,
+                                        ),
                                       ),
-                                    );
-                                  },
-                                  reservedSize:
-                                      40, // Increase space for better alignment
+                                      bottomTitles: AxisTitles(
+                                        sideTitles: SideTitles(
+                                          showTitles: true,
+                                          getTitlesWidget: (value, meta) {
+                                            const daysOfWeek = [
+                                              'Sun',
+                                              'Mon',
+                                              'Tue',
+                                              'Wed',
+                                              'Thu',
+                                              'Fri',
+                                              'Sat'
+                                            ];
+                                            String title = daysOfWeek[
+                                                (value.toInt() - 1) %
+                                                    daysOfWeek.length];
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0),
+                                              child: Text(
+                                                title,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      topTitles: const AxisTitles(
+                                          sideTitles:
+                                              SideTitles(showTitles: false)),
+                                      rightTitles: const AxisTitles(
+                                          sideTitles:
+                                              SideTitles(showTitles: false)),
+                                    ),
+                                    borderData: FlBorderData(show: false),
+                                    gridData: const FlGridData(
+                                      drawHorizontalLine: true,
+                                      drawVerticalLine: false,
+                                    ),
+                                    barTouchData: BarTouchData(
+                                      touchCallback: (event, response) {
+                                        if (response != null &&
+                                            response.spot != null) {
+                                          final tappedDay = response
+                                              .spot!
+                                              .touchedBarGroup
+                                              .x; // Use x value of the group
+                                          _onBarTapped(tappedDay);
+                                        }
+                                      },
+                                      touchTooltipData: BarTouchTooltipData(
+                                        getTooltipColor: (group) =>
+                                            Colors.blueAccent,
+                                        getTooltipItem:
+                                            (group, groupIndex, rod, rodIndex) {
+                                          return BarTooltipItem(
+                                            '${group.x}: ${rod.toY.toStringAsFixed(2)}',
+                                            const TextStyle(
+                                                color: Colors.white),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                              bottomTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: true,
-                                  getTitlesWidget: (value, meta) {
-                                    const daysOfWeek = [
+                              // Show the maximum value when a bar is tapped
+                              if (_selectedDayMaxValue > 0)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 16.0),
+                                  child: Text(
+                                    'Max $_selectedNutrient value for ${[
                                       'Sun',
                                       'Mon',
                                       'Tue',
@@ -260,42 +373,54 @@ class _NPKDataScreenState extends State<NPKDataScreen> {
                                       'Thu',
                                       'Fri',
                                       'Sat'
-                                    ];
-                                    String title = daysOfWeek[
-                                        (value.toInt() - 1) %
-                                            7]; // Map x value to day name
-                                    return Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Text(
-                                        title,
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    );
-                                  },
+                                    ][_selectedDay - 1]}: ${_selectedDayMaxValue.toStringAsFixed(2)}',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              topTitles: const AxisTitles(
-                                sideTitles: SideTitles(
-                                    showTitles: false), // Hide top titles
-                              ),
-                              rightTitles: const AxisTitles(
-                                sideTitles: SideTitles(
-                                    showTitles: false), // Hide right titles
-                              ),
-                            ),
-                            borderData:
-                                FlBorderData(show: false), // Hide borders
-                            gridData: const FlGridData(
-                              drawHorizontalLine: true,
-                              drawVerticalLine: false,
-                            ), // Show horizontal grid lines only
+                              // Display individual day tiles
+                              if (_selectedDayData != null &&
+                                  _selectedDayData!.isNotEmpty)
+                                Column(
+                                  children: [
+                                    ..._selectedDayData!.map((dataPoint) =>
+                                        Card(
+                                          elevation: 4,
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12)),
+                                          child: ListTile(
+                                            contentPadding:
+                                                const EdgeInsets.all(16),
+                                            leading: const Icon(
+                                              Icons.grain,
+                                              color: Colors.green,
+                                            ),
+                                            title: Text(
+                                              'Date: ${DateTime.parse(dataPoint['timestamp']).toLocal().toString().split(' ')[0]}',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            subtitle: Text(
+                                              '$_selectedNutrient: ${dataPoint[_selectedNutrient.toLowerCase()] ?? "No Data"}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        )),
+                                  ],
+                                ),
+                            ],
                           )),
-                        ),
-            ),
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
