@@ -35,7 +35,6 @@ class _UserManualFarmerState extends State<UserManualFarmer> {
   void initState() {
     super.initState();
     _subscribeToDataChanges();
-    _fetchSoilData();
   }
 
   void _fetchSoilData() {
@@ -79,27 +78,23 @@ class _UserManualFarmerState extends State<UserManualFarmer> {
   void _subscribeToDataChanges() {
     _dataSubscription = _databaseRef.child('data').onValue.listen((event) {
       final snapshotValue = event.snapshot.value;
-      if (snapshotValue == null) {
-        print("No data found at the specified path.");
+      if (snapshotValue != null && snapshotValue is Map) {
+        setState(() {
+          _dataMap = {
+            "Nitrogen (N)":
+                double.tryParse(snapshotValue['nitrogen']?.toString() ?? '0') ??
+                    0.0,
+            "Phosphorus (P)": double.tryParse(
+                    snapshotValue['phosphorus']?.toString() ?? '0') ??
+                0.0,
+            "Potassium (K)": double.tryParse(
+                    snapshotValue['potassium']?.toString() ?? '0') ??
+                0.0,
+          };
+        });
+        print("Updated DataMap: $_dataMap"); // Add this to debug
       } else {
-        // Ensure snapshotValue is of the expected type (Map)
-        if (snapshotValue is Map) {
-          setState(() {
-            _dataMap = {
-              "Nitrogen (N)": double.tryParse(
-                      snapshotValue['nitrogen']?.toString() ?? '') ??
-                  0.0,
-              "Phosphorus (P)": double.tryParse(
-                      snapshotValue['phosphorus']?.toString() ?? '') ??
-                  0.0,
-              "Potassium (K)": double.tryParse(
-                      snapshotValue['potassium']?.toString() ?? '') ??
-                  0.0,
-            };
-          });
-        } else {
-          print("Unexpected data structure: ${snapshotValue.runtimeType}");
-        }
+        print("No data or invalid data structure: $snapshotValue");
       }
     }, onError: (error) {
       print("Error getting live data: $error");
@@ -115,7 +110,7 @@ class _UserManualFarmerState extends State<UserManualFarmer> {
     },
     {
       'type': 'Organic Manure',
-      'npk': {'Nitrogen': 3.0, 'Phosphorus': 2.0, 'Potassium': 2.5}
+      'npk': {'Nitrogen': 2.0, 'Phosphorus': 2.5, 'Potassium': 1.0}
     },
   ];
 
@@ -361,7 +356,7 @@ class _UserManualFarmerState extends State<UserManualFarmer> {
                     ),
                     gridData: const FlGridData(
                       show: true,
-                      horizontalInterval: 1,
+                      horizontalInterval: 100,
                       drawVerticalLine: false,
                     ),
                     borderData: FlBorderData(
@@ -374,13 +369,12 @@ class _UserManualFarmerState extends State<UserManualFarmer> {
                         x: 0,
                         barRods: [
                           BarChartRodData(
-                            toY: (researchValues['Nitrogen']?.toDouble() ?? 0) *
-                                100,
+                            toY: researchValues['Nitrogen']! * 100,
                             color: Colors.green.shade300,
                             width: 20,
                           ),
                           BarChartRodData(
-                            toY: _dataMap['Nitrogen']?.toDouble() ?? 0,
+                            toY: normalizedDataMap['Nitrogen']!,
                             color: Colors.green.shade700,
                             width: 20,
                           ),
@@ -400,7 +394,7 @@ class _UserManualFarmerState extends State<UserManualFarmer> {
                                 top: Radius.circular(6)),
                           ),
                           BarChartRodData(
-                            toY: _dataMap['Phosphorus'] ?? 0,
+                            toY: normalizedDataMap['Phosphorus'] ?? 0,
                             color: Colors.blue.shade700,
                             width: 20,
                             borderRadius: const BorderRadius.vertical(
@@ -421,7 +415,7 @@ class _UserManualFarmerState extends State<UserManualFarmer> {
                                 top: Radius.circular(6)),
                           ),
                           BarChartRodData(
-                            toY: _dataMap['Potassium'] ?? 0,
+                            toY: normalizedDataMap['Potassium'] ?? 0,
                             color: Colors.red.shade700,
                             width: 20,
                             borderRadius: const BorderRadius.vertical(
@@ -450,6 +444,44 @@ class _UserManualFarmerState extends State<UserManualFarmer> {
                     ),
                   ),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Research indicator
+                  Row(
+                    children: [
+                      Container(
+                        width: 16,
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: Colors.green
+                              .shade300, // Using the lighter shade as in the chart
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const Text('Research Value'),
+                    ],
+                  ),
+                  const SizedBox(width: 24), // Spacing between indicators
+                  // Test Kit indicator
+                  Row(
+                    children: [
+                      Container(
+                        width: 16,
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: Colors.green
+                              .shade700, // Using the darker shade as in the chart
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const Text('Test Kit Value'),
+                    ],
+                  ),
+                ],
               ),
               // Padding(
               //   padding: const EdgeInsets.all(16.0),
@@ -675,7 +707,7 @@ class _UserManualFarmerState extends State<UserManualFarmer> {
               value: _dataMap['Nitrogen (N)'] ?? 0,
               color: Colors.green,
               title:
-                  'Nitrogen (N)\n${_dataMap['Nitrogen (N)']?.toStringAsFixed(1) ?? '0'}%',
+                  'Nitrogen (N)\n${_dataMap['Nitrogen (N)']?.toStringAsFixed(1) ?? '0'}',
               radius: 100,
               titleStyle: const TextStyle(
                 fontSize: 14,
