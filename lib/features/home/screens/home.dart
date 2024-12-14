@@ -8,9 +8,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:innovators/features/chatbot.dart';
 import 'package:innovators/features/fertlizer_health/screens/fertilizer_calculate.dart';
 import 'package:innovators/features/fertlizer_health/screens/fertilizer_health_scheduling_screens.dart';
-import 'package:innovators/features/chatbot.dart';
+import 'package:innovators/features/home/npk_temp_data_generator.dart';
 import 'package:innovators/features/home/screens/soil_analaysis.dart';
 import 'package:innovators/features/marketplace/screens/crop_realtime.dart';
 import 'package:innovators/profile/profileScreen.dart';
@@ -136,7 +137,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _fetchPumpStatus();
+    _initializeAsyncMethods(); // Call the method without await
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -145,7 +146,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       parent: _animationController,
       curve: Curves.easeInOut,
     );
+  }
+
+  void _initializeAsyncMethods() async {
+    _fetchPumpStatus();
     _fetchSoilData();
+    generateTempData();
+  }
+
+  void generateTempData() async {
+    NPKDataGenerator generator = NPKDataGenerator();
+    // await generator.generateNestedNPKData();
+    await generator.printSampleData();
   }
 
   @override
@@ -245,7 +257,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const AiScheduling(),
+        builder: (context) => const NPKDataScreen(),
       ),
     );
   }

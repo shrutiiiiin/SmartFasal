@@ -1,325 +1,301 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:math';
+
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:innovators/features/home/npk_temp_data_generator.dart';
 
-class AiScheduling extends StatefulWidget {
-  final double? nitrogen;
-  final double? phosphorus;
-  final double? potassium;
-
-  const AiScheduling({
-    super.key,
-    this.nitrogen,
-    this.phosphorus,
-    this.potassium,
-  });
+class NPKDataScreen extends StatefulWidget {
+  const NPKDataScreen({super.key});
 
   @override
-  _AiSchedulingState createState() => _AiSchedulingState();
+  _NPKDataScreenState createState() => _NPKDataScreenState();
 }
 
-class _AiSchedulingState extends State<AiScheduling> {
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
-  String npkValues = '';
-  DateTime _selectedDateTime = DateTime.now(); // Initialize the variable here
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+class _NPKDataScreenState extends State<NPKDataScreen> {
+  final NPKDataGenerator _dataGenerator = NPKDataGenerator();
+  List<dynamic>? _npkData; // To store weekly data
+  bool _isLoading = true;
+  String? _errorMessage;
+  String _selectedNutrient = 'Nitrogen'; // Default nutrient
+  String _dataMode = 'day';
 
   @override
   void initState() {
     super.initState();
-    _selectedDay = _focusedDay;
-    _updateNPKValues();
+
+    _fetchNPKDataWeek(); // Fetch weekly data on init
   }
 
-  void _updateNPKValues() {
+  Future<void> _fetchNPKDataWeek() async {
     setState(() {
-      npkValues =
-          'Nitrogen: ${widget.nitrogen}, Phosphorus: ${widget.phosphorus}, Potassium: ${widget.potassium}';
+      _isLoading = true;
+      _errorMessage = null;
     });
-  }
-
-  Future<void> _saveNPKValues() async {
-    User? user = _auth.currentUser;
-    if (user == null) return;
-
-    DateTime reminderDate = _selectedDay!.add(const Duration(days: 3));
-
     try {
-      await _firestore
-          .collection('fertilizer_checkups')
-          .doc(user.uid)
-          .collection('checkups')
-          .doc(_selectedDay.toString())
-          .set({
-        'nitrogen': widget.nitrogen,
-        'phosphorus': widget.phosphorus,
-        'potassium': widget.potassium,
-        'reminderDate': reminderDate.toIso8601String(),
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('NPK values saved successfully!')),
-      );
-    } catch (e) {
-      print("Error saving NPK values: $e");
-    }
-  }
+      DateTime now = DateTime.now();
+      String year = now.year.toString();
+      String month = NPKDataGenerator.months[now.month - 1];
+      String week = 'Week ${_getCurrentWeekNumber(now)}';
 
-  Future<void> _selectDateTime() async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: _selectedDateTime,
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-    );
-    if (pickedDate != null) {
-      final TimeOfDay? pickedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.fromDateTime(_selectedDateTime),
+      dynamic data = await _dataGenerator.getNPKData(
+        year: year,
+        month: month,
+        week: week,
       );
-      if (pickedTime != null) {
+
+      if (data != null && data is Map<String, dynamic>) {
+        List<dynamic> flattenedData = [];
+        data.forEach((day, dayData) {
+          if (dayData is List) {
+            flattenedData.addAll(dayData);
+          }
+        });
+
+        if (flattenedData.isNotEmpty) {
+          setState(() {
+            _npkData = flattenedData;
+            _isLoading = false;
+          });
+        } else {
+          setState(() {
+            _errorMessage = 'No data found for the selected week.';
+            _isLoading = false;
+          });
+        }
+      } else {
         setState(() {
-          _selectedDateTime = DateTime(
-            pickedDate.year,
-            pickedDate.month,
-            pickedDate.day,
-            pickedTime.hour,
-            pickedTime.minute,
-          );
+          _errorMessage = 'No data found for the selected week.';
+          _isLoading = false;
         });
       }
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Error fetching data: $e';
+        _isLoading = false;
+      });
     }
   }
 
-  Future<Map<String, dynamic>?> fetchValuesNPK(DateTime selectedDay) async {
+  int _getCurrentWeekNumber(DateTime date) {
+    int firstDayOfMonth = DateTime(date.year, date.month, 1).weekday;
+    return ((date.day + firstDayOfMonth - 2) ~/ 7) + 1;
+  }
+
+  Future<void> _fetchNPKDataDay(String dayName) async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+      _dataMode = 'day';
+    });
     try {
-      // Define the start and end of the selected day
-      DateTime startOfDay =
-          DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
-      DateTime endOfDay = startOfDay.add(const Duration(days: 1));
+      DateTime now = DateTime.now();
+      String year = now.year.toString();
+      String month = NPKDataGenerator.months[now.month - 1];
+      String week = 'Week ${_getCurrentWeekNumber(now)}';
+      String day = dayName;
+      print(day);
 
-      // Query Firestore for documents within the selected day's range
-      QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
-          .collection('users')
-          .doc('realtime data value')
-          .collection('soil_data')
-          .where('timestamp', isGreaterThanOrEqualTo: startOfDay)
-          .where('timestamp', isLessThan: endOfDay)
-          .get();
+      dynamic data = await _dataGenerator.getNPKData(
+        year: year,
+        month: month,
+        week: week,
+        day: day,
+      );
+      print(data);
 
-      if (snapshot.docs.isNotEmpty) {
-        return snapshot.docs.first.data();
+      if (data != null && data is List) {
+        setState(() {
+          _npkData = data;
+          _isLoading = false;
+        });
       } else {
-        print('No data found for the selected day.');
-        return null;
+        setState(() {
+          _errorMessage = 'No data found for the selected day.';
+          _isLoading = false;
+        });
       }
     } catch (e) {
-      print("Error fetching NPK values: $e");
-      return null;
+      setState(() {
+        _errorMessage = 'Error fetching data: $e';
+        _isLoading = false;
+      });
     }
+  }
+
+  List<BarChartGroupData> _createChartData() {
+    if (_npkData == null || _npkData!.isEmpty) return [];
+
+    Map<int, double> maxNutrientValues =
+        {}; // Use integers for day of the week (1=Mon, 7=Sun)
+
+    for (var dataPoint in _npkData!) {
+      DateTime date = DateTime.parse(dataPoint['timestamp']);
+      int dayOfWeek = date.weekday; // Monday=1, Sunday=7
+      double nutrientValue;
+
+      switch (_selectedNutrient) {
+        case 'Nitrogen':
+          nutrientValue = double.parse(dataPoint['nitrogen']);
+          break;
+        case 'Phosphorus':
+          nutrientValue = double.parse(dataPoint['phosphorus']);
+          break;
+        case 'Potassium':
+          nutrientValue = double.parse(dataPoint['potassium']);
+          break;
+        default:
+          nutrientValue = 0.0;
+      }
+
+      if (maxNutrientValues.containsKey(dayOfWeek)) {
+        maxNutrientValues[dayOfWeek] =
+            max(maxNutrientValues[dayOfWeek]!, nutrientValue);
+      } else {
+        maxNutrientValues[dayOfWeek] = nutrientValue;
+      }
+    }
+
+    // Sort the entries by day of the week (1=Mon, ..., 7=Sun)
+    List<int> orderedDays = [7, 1, 2, 3, 4, 5, 6]; // Sunday first
+    return orderedDays.map((day) {
+      double value = maxNutrientValues[day] ?? 0.0;
+      return BarChartGroupData(
+        x: day,
+        barRods: [
+          BarChartRodData(
+            toY: value,
+            color: Colors.greenAccent,
+            width: 20,
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ],
+      );
+    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text('AI Scheduling')),
+      appBar: AppBar(
+        title: const Text('NPK Data', style: TextStyle(fontSize: 24)),
+        backgroundColor: Colors.green,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'NPK Update Feed',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        child: Column(
+          children: [
+            Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-              const SizedBox(height: 20),
-              TableCalendar(
-                firstDay: DateTime.utc(2000, 1, 1),
-                lastDay: DateTime.utc(2100, 12, 31),
-                focusedDay: _focusedDay,
-                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                  });
-                },
-                calendarStyle: const CalendarStyle(
-                  todayDecoration: BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                  ),
-                  selectedDecoration: BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                headerStyle: const HeaderStyle(
-                  formatButtonVisible: false,
-                  titleCentered: true,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Selected Day: ${_selectedDay?.toLocal().toString().split(' ')[0] ?? 'No day selected'}',
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'NPK Values: $npkValues',
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 20),
-              FutureBuilder<Map<String, dynamic>?>(
-                future: fetchValuesNPK(_selectedDay!),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return const Text('Error fetching data');
-                  } else if (!snapshot.hasData || snapshot.data == null) {
-                    return const Text(
-                        'No data available for the selected day.');
-                  }
-
-                  final data = snapshot.data!;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Fetched NPK Values:',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: DropdownButton<String>(
+                  value: _selectedNutrient,
+                  items: <String>['Nitrogen', 'Phosphorus', 'Potassium']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.grain), // Add an icon here
+                          const SizedBox(width: 8),
+                          Text(value),
+                        ],
                       ),
-                      Text('Nitrogen: ${data['nitrogen'] ?? 'N/A'}'),
-                      Text('Phosphorus: ${data['phosphorus'] ?? 'N/A'}'),
-                      Text('Potassium: ${data['potassium'] ?? 'N/A'}'),
-                      Text('pH: ${data['ph'] ?? 'N/A'}'),
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              const Text(
-                'Fertilizer Reminder',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedNutrient = newValue!;
+                    });
+                  },
+                  isExpanded: true,
+                  underline: Container(),
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: 338,
-                height: 100,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 16,
-                ),
-                decoration: ShapeDecoration(
-                  color: Colors.white12,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Time & Date',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            color: Colors.black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: _selectDateTime,
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            margin: const EdgeInsets.only(right: 16),
-                            decoration: const ShapeDecoration(
-                              color: Color(0x91D9D9D9),
-                              shape: OvalBorder(),
-                              image: DecorationImage(
-                                image: AssetImage(
-                                  'assets/Ai_scheduling/edit_icon.png',
+            ),
+            const SizedBox(
+              height: 30,
+            ), // Space between dropdown and chart
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _errorMessage != null
+                      ? Center(child: Text(_errorMessage!))
+                      : SizedBox(
+                          height: 250,
+                          child: BarChart(BarChartData(
+                            barGroups: _createChartData(),
+                            titlesData: FlTitlesData(
+                              leftTitles: AxisTitles(
+                                sideTitles: SideTitles(
+                                  showTitles: true,
+                                  getTitlesWidget: (value, meta) {
+                                    return Text(
+                                      value.toStringAsFixed(
+                                          0), // Format as integers
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    );
+                                  },
+                                  reservedSize:
+                                      40, // Increase space for better alignment
                                 ),
                               ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Row(
-                          children: [
-                            Image.asset(
-                              'assets/Ai_scheduling/clock_icon.png',
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              DateFormat('hh:mm').format(_selectedDateTime),
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xFF494E54),
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
+                              bottomTitles: AxisTitles(
+                                sideTitles: SideTitles(
+                                  showTitles: true,
+                                  getTitlesWidget: (value, meta) {
+                                    const daysOfWeek = [
+                                      'Sun',
+                                      'Mon',
+                                      'Tue',
+                                      'Wed',
+                                      'Thu',
+                                      'Fri',
+                                      'Sat'
+                                    ];
+                                    String title = daysOfWeek[
+                                        (value.toInt() - 1) %
+                                            7]; // Map x value to day name
+                                    return Padding(
+                                      padding: const EdgeInsets.only(top: 8.0),
+                                      child: Text(
+                                        title,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              topTitles: const AxisTitles(
+                                sideTitles: SideTitles(
+                                    showTitles: false), // Hide top titles
+                              ),
+                              rightTitles: const AxisTitles(
+                                sideTitles: SideTitles(
+                                    showTitles: false), // Hide right titles
                               ),
                             ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              DateFormat('a').format(_selectedDateTime),
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xFF494E54),
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
+                            borderData:
+                                FlBorderData(show: false), // Hide borders
+                            gridData: const FlGridData(
+                              drawHorizontalLine: true,
+                              drawVerticalLine: false,
+                            ), // Show horizontal grid lines only
+                          )),
                         ),
-                        const SizedBox(
-                          width: 24,
-                        ),
-                        Text(
-                          DateFormat('dd MMM, yyyy').format(_selectedDateTime),
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            color: const Color(0xFF494E54),
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            height: 0.09,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
