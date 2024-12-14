@@ -294,6 +294,7 @@ class _SoilAnalaysisState extends State<SoilAnalaysis> {
             ),
           ),
           SizedBox(height: screenHeight * 0.014),
+
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: SizedBox(

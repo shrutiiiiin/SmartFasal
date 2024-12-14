@@ -9,6 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:innovators/features/chatbot.dart';
+import 'package:innovators/features/fertlizer_health/fertilizer_calcultion.dart';
+
 import 'package:innovators/features/fertlizer_health/screens/fertilizer_calculate.dart';
 import 'package:innovators/features/fertlizer_health/screens/fertilizer_health_scheduling_screens.dart';
 import 'package:innovators/features/home/npk_temp_data_generator.dart';
@@ -266,7 +268,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FertilizerCalculatorPage(),
+        builder: (context) => fertilizercalc(),
       ),
     );
   }
