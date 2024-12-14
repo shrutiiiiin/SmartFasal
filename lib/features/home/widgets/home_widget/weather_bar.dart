@@ -152,18 +152,18 @@ class _WeatherBarState extends State<WeatherBar> {
                       children: [
                         Text(weather.weather),
                         SizedBox(width: widget.screenWidth * 0.02),
-                        Text(
-                          isFavorableForCrops(
-                                  weather.weather, weather.temperature)
-                              ? AppLocalizations.of(context)!.favorable
-                              : AppLocalizations.of(context)!.notfavorable,
-                          style: TextStyle(
-                            color: isFavorableForCrops(
-                                    weather.weather, weather.temperature)
-                                ? Colors.green
-                                : Colors.red,
-                          ),
-                        ),
+                        // Text(
+                        //   isFavorableForCrops(
+                        //           weather.weather, weather.temperature)
+                        //       ? AppLocalizations.of(context)!.favorable
+                        //       : AppLocalizations.of(context)!.notfavorable,
+                        //   style: TextStyle(
+                        //     color: isFavorableForCrops(
+                        //             weather.weather, weather.temperature)
+                        //         ? Colors.green
+                        //         : Colors.red,
+                        //   ),
+                        // ),
                       ],
                     ),
                     // Text(

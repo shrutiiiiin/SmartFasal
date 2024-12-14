@@ -78,17 +78,16 @@ class AuthChecker extends StatelessWidget {
           );
         }
 
-        // if (snapshot.hasData) {
-        //   // Redirect to HomeScreen if user is signed in
-        //   return const Home();
-        // }
-
-        // return WelcomeScreen(
-        //   setLocale: (Locale locale) {
-        //     onLocaleChanged(locale);
-        //   },
-        // );
-        return UserManualFarmer();
+        if (snapshot.hasData) {
+          // Redirect to HomeScreen if user is signed in
+          return const Home();
+        }
+        return WelcomeScreen(
+          setLocale: (Locale locale) {
+            onLocaleChanged(locale);
+          },
+        );
+        // return UserManualFarmer();
       },
     );
   }

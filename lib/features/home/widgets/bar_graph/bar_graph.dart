@@ -24,13 +24,13 @@ class BarGraph extends StatelessWidget {
           leftTitles: const AxisTitles(
             sideTitles: SideTitles(
               showTitles:
-                  true, // Set to false if you want to hide the Y-axis titles
+                  false, // Set to false if you want to hide the Y-axis titles
               reservedSize: 40, // Adjust this value for spacing
             ),
           ),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
-              showTitles: true,
+              showTitles: false,
               getTitlesWidget: (double value, TitleMeta meta) {
                 switch (value.toInt()) {
                   case 1:

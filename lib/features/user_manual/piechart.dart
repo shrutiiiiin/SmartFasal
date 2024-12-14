@@ -38,7 +38,6 @@ class NPKPieChart extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // Legend
             _buildLegend(),
           ],
         ),

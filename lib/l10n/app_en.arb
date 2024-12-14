@@ -75,11 +75,11 @@
     "@chatBot_screen":{
         "description":"chatBot_screen"
     },
-    "fertilizer_healthsection": "Ferilizer Health Schedule",
+    "fertilizer_healthsection": "Ferilizer Histographic Data",
     "@fertilizer_healthsection": {
         "description": "Fertilizer_health"
     },
-    "fertilizer_health": "Fertlizer Health",
+    "fertilizer_health": "Ferilizer Histographic Data",
     "@fertilizer_health":{
         "description": "fertilizer_health"
     },
