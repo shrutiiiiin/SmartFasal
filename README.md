@@ -2,10 +2,9 @@
 
 ## Screenshots to understand the workflow
 
-### Smart Fasal is an innovative mobile application designed to empower
-###farmers by providing real-time nutrient values (NPK) and pH levels of
-###fertilizers. This information helps farmers optimize fertilizer usage,
-###ensuring healthier crop growth while minimizing waste
+**Smart Fasal** is an innovative mobile application designed to empower farmers by providing real-time nutrient values (NPK) and pH levels of fertilizers. This information helps farmers optimize fertilizer usage, ensuring healthier crop growth while minimizing waste.
+
+---
 
 ###NPK Sensor 
 ![NPK Sensor](assets/appimages/npk_sensor_kit.png)
@@ -28,14 +27,13 @@
 ### Chatbot Screen
 ![Chatbot Screen](assets/appimages/chatbot.png)
 
-Most of the farmers use Urea fertilizer in their farm which contains high
-amount of Nitrogen Value (N), sometimes the N amount exceeds the
-required amount and affects the crop yield. In such scenarios our mobile
-application takes the farmers location and based on that locations
-threshold value sends an alert message to farmers. Apart from that, a
-farmer can receive daily updates, suggestions (personalized on their NPK
-values ), improvements on whatsapp, along with a visual image to
-improve farmers user experience.
+### Alerts for Farmers
+
+Most farmers use Urea fertilizer on their farms, which contains a high amount of Nitrogen (N). Sometimes, the Nitrogen amount exceeds the required level, negatively affecting crop yield. 
+
+In such scenarios, our mobile application takes the farmer's location and, based on the location's threshold values, sends an alert message to the farmers. Apart from that, farmers can receive daily updates, personalized suggestions (based on their NPK values), and improvement tips via WhatsApp, along with a visual image to enhance their user experience.
+
+---
 
 ### whatsapp_alert Screen
 ![whatsapp_alert Screen](assets/appimages/whatsapp_alert.png)
