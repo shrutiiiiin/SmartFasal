@@ -3,9 +3,9 @@
 ## Screenshots to understand the workflow
 
 ### Smart Fasal is an innovative mobile application designed to empower
-farmers by providing real-time nutrient values (NPK) and pH levels of
-fertilizers. This information helps farmers optimize fertilizer usage,
-ensuring healthier crop growth while minimizing waste
+###farmers by providing real-time nutrient values (NPK) and pH levels of
+###fertilizers. This information helps farmers optimize fertilizer usage,
+###ensuring healthier crop growth while minimizing waste
 
 ###NPK Sensor 
 ![NPK Sensor](assets/appimages/npk_sensor_kit.png)
