@@ -13,6 +13,13 @@
 ![Welcome Screen](assets/appimages/welcome_screen.png)
 
 ### language Screen
+
+The dashboard is fully accessible in 5 languages:
+○ English, Hindi, Marathi, Tamil, Telugu, and Punjabi.
+● Easily switch between languages as per your comfort, making navigation
+seamless.
+
+---
 ![language Screen](assets/appimages/language.png)
 
 ### Phone Login
@@ -20,13 +27,22 @@
 ### OTP Screen
 ![OTP Screen](assets/appimages/otp.png)
 ### Home Screen
+Visual Charts and Graphs:
+○ Track real-time NPK (Nitrogen, Phosphorus, Potassium) and pH
+values over time with interactive charts.
+○ Identify trends and patterns in soil nutrient levels for better
+decision-making
+
+
+---
+
 ![Home Screen](assets/appimages/homescreen.png)
 
 ### Fertilizer recommendation Screen
 
 Based on the current NPK values, the app suggests optimal fertilizers
 available online.
-● These recommendations are tailored to your specic crop and soil
+These recommendations are tailored to your specic crop and soil
 conditions, ensuring efcient nutrient application.
 
 ---
