@@ -28,6 +28,15 @@
 ### Chatbot Screen
 ![Chatbot Screen](assets/appimages/chatbot.png)
 
+Most of the farmers use Urea fertilizer in their farm which contains high
+amount of Nitrogen Value (N), sometimes the N amount exceeds the
+required amount and affects the crop yield. In such scenarios our mobile
+application takes the farmers location and based on that locations
+threshold value sends an alert message to farmers. Apart from that, a
+farmer can receive daily updates, suggestions (personalized on their NPK
+values ), improvements on whatsapp, along with a visual image to
+improve farmers user experience.
+
 ### whatsapp_alert Screen
 ![whatsapp_alert Screen](assets/appimages/whatsapp_alert.png)
 
