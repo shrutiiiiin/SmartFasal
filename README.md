@@ -24,7 +24,17 @@
 ### Fertilizer recommendation Screen
 ![Fertilizer recommendation Screen](assets/appimages/fertilizerrecomm.png)
 
+
+
 ### Chatbot Screen
+
+The dashboard integrates a smart chatbot and voice assistant to:
+○ Answer your questions about NPK, pH values, and fertilizer
+recommendations.
+○ Provide step-by-step guidance for app features.
+● Communicate effortlessly in your preferred language.
+---
+
 ![Chatbot Screen](assets/appimages/chatbot.png)
 
 ### Alerts for Farmers
