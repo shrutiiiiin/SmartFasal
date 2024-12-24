@@ -14,6 +14,7 @@ import 'package:innovators/features/fertlizer_health/screens/fertilizer_health_s
 import 'package:innovators/features/home/npk_temp_data_generator.dart';
 import 'package:innovators/features/home/screens/soil_analaysis.dart';
 import 'package:innovators/features/marketplace/screens/crop_realtime.dart';
+import 'package:innovators/features/user_manual/user_manual.dart';
 import 'package:innovators/profile/profileScreen.dart';
 
 class Home extends StatefulWidget {
@@ -221,9 +222,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 },
               ),
               ListTile(
-                leading: Image.asset(
-                  'assets/home/icons/Profile.png',
-                  width: 24,
+                leading: const Icon(
+                  Icons.history_outlined,
                 ),
                 title: Text(
                   AppLocalizations.of(context)!.ai,
@@ -234,9 +234,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 },
               ),
               ListTile(
-                leading: Image.asset(
-                  'assets/home/icons/Chatbot.png',
-                  width: 24,
+                leading: const Icon(
+                  Icons.calculate_outlined,
                 ),
                 title: Text(
                   AppLocalizations.of(context)!.handleFertilizerCalc,
@@ -266,7 +265,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FertilizerCalculatorPage(),
+        builder: (context) => UserManualFarmer(),
       ),
     );
   }

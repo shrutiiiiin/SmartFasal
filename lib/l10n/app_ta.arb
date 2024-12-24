@@ -6,7 +6,6 @@
     "analysis":"பகுப்பாய்வு",
     "chatBot": "அரட்டை போட்",
     "scheme":"சந்தை",
-    "ai":"AI திட்டமிடல்",
     "soilMoisture":"மண்ணின் ஈரப்பதம்%",
     "temperature":"வெப்பநிலை",
     "fertilizerLevel":"உர நிலை",
@@ -18,8 +17,8 @@
     "selectLanguage":"மொழியைத் தேர்ந்தெடுக்கவும்",
     "fertilizer_status":"உரம் ஆரோக்கியமானது",
     "chatBot_screen":"வரவேற்கிறோம், அக்ரிபோட் உடன் அரட்டை அடிப்போம்!",
-    "fertilizer_healthsection":"உரம் சுகாதார அட்டவணை",
-    "fertilizer_health":"உர ஆரோக்கியம்",
+    "fertilizer_healthsection":"உர வரலாற்று தரவு",
+    "fertilizer_health":"உர வரலாற்று தரவு",
     "manual":"கையேடு",
     "progress":"முன்னேற்றம்",
     "fertilizer_health_healthy":"உர ஆரோக்கியம் (ஆரோக்கியமான)",
@@ -31,7 +30,8 @@
     "enterOtp": "உங்கள் OTP ஐ உள்ளிடவும்",
     "enterPhoneNumber": "உங்கள் தொலைபேசி எண்ணை உள்ளிடவும்",
     "phoneLogin": "ஸ்மார்ட் ஃபசலின் ஒரு பகுதியாக இருக்க உங்கள் தொலைபேசி எண்ணை உள்ளிடவும்",
-    "handleFertilizerCalc":"உரக் கணக்கீடு"
+    "handleFertilizerCalc":"உரக் கணக்கீடு",
+    "ai":"NPK చరిత్ర"
     
 
 }

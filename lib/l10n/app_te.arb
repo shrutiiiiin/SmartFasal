@@ -28,7 +28,7 @@
     "@scheme": {
         "description": "Scheme bottom navigation"
     },
-    "ai": "AI షెడ్యూలింగ్",
+   "ai": "NPK வரலாறு",
     "@ai": {
         "description": "Profile bottom navigation"
     },
@@ -90,6 +90,14 @@
     "handleFertilizerCalc":"ఎరువులు గణన",
     "@handleFertilizerCalc":{
         "description":"handleFertilizerCalc"
+    },
+    "fertilizer_healthsection":"ఎరువుల హిస్టోగ్రాఫిక్ డేటా",
+    "@fertilizer_healthsection":{
+        "description":"fertilizer_healthsection"
+    },
+    "fertilizer_health": "ఎరువుల హిస్టోగ్రాఫిక్ డేటా",
+    "@fertilizer_health":{
+        "description":"fertilizer_health"
     }
 
 

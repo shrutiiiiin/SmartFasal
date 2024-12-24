@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:innovators/features/home/screens/home.dart';
+import 'package:innovators/features/user_manual/user_manual.dart';
 import 'package:innovators/firebase_options.dart';
 import 'package:innovators/welcome.dart';
 
@@ -81,13 +82,12 @@ class AuthChecker extends StatelessWidget {
           // Redirect to HomeScreen if user is signed in
           return const Home();
         }
-
         return WelcomeScreen(
           setLocale: (Locale locale) {
             onLocaleChanged(locale);
           },
         );
-        // return AiScheduling();
+        // return UserManualFarmer();
       },
     );
   }

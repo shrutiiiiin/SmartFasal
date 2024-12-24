@@ -237,6 +237,12 @@ class _SoilAnalaysisState extends State<SoilAnalaysis> {
       'image': 'assets/home/images/ph.png',
       'color': const Color(0xffA6EDFF).withOpacity(0.75)
     },
+    // {
+    //   'title': 'Humidity',
+    //   'value': 'N/A',
+    //   'image': 'assets/home/images/ph.png',
+    //   'color': const Color(0xff4CB3FC).withOpacity(0.55)
+    // },
   ];
 
   void _updateGridData() {
@@ -259,12 +265,12 @@ class _SoilAnalaysisState extends State<SoilAnalaysis> {
           //   'image': 'assets/home/images/temp.png',
           //   'color': const Color(0xffFCA74C).withOpacity(0.55)
           // },
-          {
-            'title': AppLocalizations.of(context)!.fertilizerLevel,
-            'value': _data!['waterLevel']?.toString() ?? 'N/A',
-            'image': 'assets/home/images/water level.png',
-            'color': const Color(0xff4CB3FC).withOpacity(0.55)
-          },
+          // {
+          //   'title': AppLocalizations.of(context)!.fertilizerLevel,
+          //   'value': _data!['waterLevel']?.toString() ?? 'N/A',
+          //   'image': 'assets/home/images/water level.png',
+          //   'color': const Color(0xff4CB3FC).withOpacity(0.55)
+          // },
           {
             'title': AppLocalizations.of(context)!.phLevel,
             'value': _data!['pH'] != null
@@ -273,6 +279,14 @@ class _SoilAnalaysisState extends State<SoilAnalaysis> {
             'image': 'assets/home/images/ph.png',
             'color': const Color(0xffA6EDFF).withOpacity(0.75)
           },
+          // {
+          //   'title': AppLocalizations.of(context)!.phLevel,
+          //   'value': weather.humidity != null
+          //       ? 'Humidity: ${weather.humidity}%'
+          //       : 'N/A', // Check if humidity is available
+          //   'image': 'assets/home/images/ph.png',
+          //   'color': const Color(0xffA6EDFF).withOpacity(0.75)
+          // },
         ];
       });
     }
@@ -294,6 +308,7 @@ class _SoilAnalaysisState extends State<SoilAnalaysis> {
             ),
           ),
           SizedBox(height: screenHeight * 0.014),
+
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: SizedBox(

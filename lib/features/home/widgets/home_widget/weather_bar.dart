@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:innovators/model/location.dart';
 import 'package:innovators/model/weather_model/weather_class.dart';
@@ -152,18 +151,18 @@ class _WeatherBarState extends State<WeatherBar> {
                       children: [
                         Text(weather.weather),
                         SizedBox(width: widget.screenWidth * 0.02),
-                        Text(
-                          isFavorableForCrops(
-                                  weather.weather, weather.temperature)
-                              ? AppLocalizations.of(context)!.favorable
-                              : AppLocalizations.of(context)!.notfavorable,
-                          style: TextStyle(
-                            color: isFavorableForCrops(
-                                    weather.weather, weather.temperature)
-                                ? Colors.green
-                                : Colors.red,
-                          ),
-                        ),
+                        // Text(
+                        //   isFavorableForCrops(
+                        //           weather.weather, weather.temperature)
+                        //       ? AppLocalizations.of(context)!.favorable
+                        //       : AppLocalizations.of(context)!.notfavorable,
+                        //   style: TextStyle(
+                        //     color: isFavorableForCrops(
+                        //             weather.weather, weather.temperature)
+                        //         ? Colors.green
+                        //         : Colors.red,
+                        //   ),
+                        // ),
                       ],
                     ),
                     // Text(

@@ -23,14 +23,15 @@
     "@chatBot": {
         "description": "ChatBot bottom navigation"
     },
+     "ai": "NPK History",
+    "@ai": {
+        "description": "Profile bottom navigation"
+    },
       "scheme": "Marketplace",
     "@scheme": {
         "description": "Scheme bottom navigation"
     },
-        "ai": "Fertilizer health Scheduling",
-    "@ai": {
-        "description": "Profile bottom navigation"
-    },
+      
     "soilMoisture":"Soil Moisture %",
     "@soilMoisture": {
         "description":"Soil Moisture %"
@@ -75,11 +76,11 @@
     "@chatBot_screen":{
         "description":"chatBot_screen"
     },
-    "fertilizer_healthsection": "Ferilizer Health Schedule",
+    "fertilizer_healthsection": "Ferilizer Histographic Data",
     "@fertilizer_healthsection": {
         "description": "Fertilizer_health"
     },
-    "fertilizer_health": "Fertlizer Health",
+    "fertilizer_health": "Ferilizer Histographic Data",
     "@fertilizer_health":{
         "description": "fertilizer_health"
     },
@@ -151,7 +152,7 @@
     "@verifyOtp": {
         "description": "verifyOtp"
     },
-    "handleFertilizerCalc": "Ferilizer Calculation",
+    "handleFertilizerCalc": "Farmer Manual",
     "@handleFertilizerCalc": {
         "description": "handleFertilizerCalc"
     }

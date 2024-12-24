@@ -18,25 +18,25 @@ class CropNutrientRequirement {
 // Predefined crop nutrient requirements
 class CropNutrientDatabase {
   static final List<CropNutrientRequirement> cropRequirements = [
-    CropNutrientRequirement(
+    const CropNutrientRequirement(
       cropName: 'Wheat',
       nitrogenNeed: 60.0,
       phosphorusNeed: 30.0,
       potassiumNeed: 40.0,
     ),
-    CropNutrientRequirement(
+    const CropNutrientRequirement(
       cropName: 'Rice',
       nitrogenNeed: 80.0,
       phosphorusNeed: 40.0,
       potassiumNeed: 50.0,
     ),
-    CropNutrientRequirement(
+    const CropNutrientRequirement(
       cropName: 'Corn',
       nitrogenNeed: 100.0,
       phosphorusNeed: 50.0,
       potassiumNeed: 60.0,
     ),
-    CropNutrientRequirement(
+    const CropNutrientRequirement(
       cropName: 'Soybean',
       nitrogenNeed: 40.0,
       phosphorusNeed: 20.0,
@@ -57,6 +57,8 @@ class CropNutrientDatabase {
 }
 
 class FertilizerCalculatorPage extends StatefulWidget {
+  const FertilizerCalculatorPage({super.key});
+
   @override
   _FertilizerCalculatorPageState createState() =>
       _FertilizerCalculatorPageState();

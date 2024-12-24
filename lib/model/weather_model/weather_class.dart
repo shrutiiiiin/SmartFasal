@@ -3,10 +3,11 @@ class weathermodel {
   final String weather;
   final double temperature;
 
-  weathermodel(
-      {required this.location,
-      required this.weather,
-      required this.temperature});
+  weathermodel({
+    required this.location,
+    required this.weather,
+    required this.temperature,
+  });
 
   factory weathermodel.fromJson(Map<String, dynamic> json) {
     return weathermodel(

@@ -24,7 +24,7 @@ class soil_parameters extends StatelessWidget {
           crossAxisSpacing: screenWidth * 0.02,
           childAspectRatio: 3 / 2,
         ),
-        itemCount: 2,
+        itemCount: gridData.length,
         itemBuilder: (context, index) {
           final item = gridData[index];
           return Row(
