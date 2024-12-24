@@ -17,8 +17,8 @@ class BarGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return BarChart(
       BarChartData(
-        maxY: 300,
-        minY: 100,
+        maxY: 100,
+        minY: 0,
         barGroups: _createBarGroups(),
         titlesData: FlTitlesData(
           leftTitles: const AxisTitles(

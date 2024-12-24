@@ -31,10 +31,7 @@
     "@scheme": {
         "description": "Scheme bottom navigation"
     },
-        "ai": "Fertilizer Health Scheduling",
-    "@ai": {
-        "description": "Profile bottom navigation"
-    },
+      
     "soilMoisture":"Soil Moisture %",
     "@soilMoisture": {
         "description":"Soil Moisture %"
@@ -155,7 +152,7 @@
     "@verifyOtp": {
         "description": "verifyOtp"
     },
-    "handleFertilizerCalc": "Ferilizer Calculation",
+    "handleFertilizerCalc": "Farmer Manual",
     "@handleFertilizerCalc": {
         "description": "handleFertilizerCalc"
     }
