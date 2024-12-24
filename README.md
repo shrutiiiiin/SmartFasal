@@ -87,3 +87,13 @@ plan future fertilizer applications.
 
 ---
 ![NPK Weekly data Screen](assets/appimages/npk_weeklyData.png)
+
+
+### User Manual Screen
+Provided a guide for farmers to simplify the usability of product.
+Also, added a comparison between the actual researched value and values
+tested by our NPK kit. This is shown using a graph and drop down feature
+to select the manure available.
+
+---
+![User Manual Screen](assets/appimages/user_manual.png)
