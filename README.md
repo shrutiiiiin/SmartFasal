@@ -21,7 +21,15 @@
 ![OTP Screen](assets/appimages/otp.png)
 ### Home Screen
 ![Home Screen](assets/appimages/homescreen.png)
+
 ### Fertilizer recommendation Screen
+
+Based on the current NPK values, the app suggests optimal fertilizers
+available online.
+● These recommendations are tailored to your specic crop and soil
+conditions, ensuring efcient nutrient application.
+
+---
 ![Fertilizer recommendation Screen](assets/appimages/fertilizerrecomm.png)
 
 
@@ -54,4 +62,12 @@ In such scenarios, our mobile application takes the farmer's location and, based
 ![sms_alert Screen](assets/appimages/sms_alert.png)
 
 ### NPK Weekly data Screen
+
+Historical Data View
+● Access and analyze past NPK readings.
+● Compare historical data with current readings to measure progress and
+plan future fertilizer applications.
+
+
+---
 ![NPK Weekly data Screen](assets/appimages/npk_weeklyData.png)
