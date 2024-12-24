@@ -33,8 +33,7 @@ dependencies:
   flutter_echarts: ^2.5.0
   pie_chart: ^5.4.0
   graphic: ^2.5.0
-
-  
+  flutter_dotenv: ^5.0.2
  
 
   
