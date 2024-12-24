@@ -32,6 +32,10 @@ migrate_working_dir/
 .env
 /build/
 
+# Firebase configuration
+lib/firebase_options.dart
+
+
 # Symbolication related
 app.*.symbols
 
