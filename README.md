@@ -6,9 +6,6 @@
 
 ---
 
-### NPK Sensor 
-![NPK Sensor](assets/appimages/npk_sensor_kit.png)
-
 ### Welcome Screen
 ![Welcome Screen](assets/appimages/welcome_screen.png)
 
